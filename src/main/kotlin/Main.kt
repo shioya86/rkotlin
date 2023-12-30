@@ -1,5 +1,10 @@
-package com.shioya86
+package com.shioya86.rkotlin
 
-fun main() {
-  println("Hello World!")
+import com.shioya86.rkotlin.parameterExtractor.ParameterExtractor
+
+
+fun main(args: Array<String>) {
+  val params = ParameterExtractor.parse(args)
+
+  println(params)
 }
