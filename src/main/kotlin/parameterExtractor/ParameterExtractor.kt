@@ -8,12 +8,15 @@ class ParameterExtractor {
       val parser = ArgParser("rkotlin")
 
       val defaultDir = System.getenv("TMPDIR")
+      val myProg by parser
+        .argument(ArgType.String, "myProg", description = "")
+
       val tmpDir by parser
         .option(ArgType.String, "tmpdir", description = "")
         .default(defaultDir)
 
       parser.parse(args)
-      return ParameterType(tmpDir)
+      return ParameterType(tmpDir, myProg)
     }
   }
 }
