@@ -27,19 +27,31 @@ private val myOwnTmpDir: String
   }
 
 private val compiler = "kotlinc"
-private val target = "MainKt.class"
 
 fun main(args: Array<String>) {
   val params = ParameterExtractor.parse(args)
 
   val root = params.myProg
   val workDir = getWorkPath(root)
+  val target = buildExeName(root.removeSuffix(".kt")) + "Kt"
 
   rebuild(root, workDir)
 
   run(listOf("kotlin", "-cp", workDir, target))
 }
 
+fun buildExeName(exeBaseName: String): String {
+
+  // 最初の文字を大文字に変換
+  val capitalizedString = exeBaseName.take(1).uppercase() + exeBaseName.drop(1)
+
+  // 最初の"."を"_"に変換し、二つ目以降の"."を取り除く
+  val modifiedString = capitalizedString
+    .replaceFirst(".", "_")
+    .replace(".", "")
+
+  return modifiedString
+}
 fun buildPath(vararg elements: String): String {
   return Paths.get("", *elements).toString()
 }
