@@ -9,7 +9,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.MessageDigest
 
-
 private val userName: String
   get() {
     return System.getProperty("user.name")
@@ -26,32 +25,19 @@ private val myOwnTmpDir: String
     return tmpRoot
   }
 
-private val compiler = "kotlinc"
+private const val compiler = "kotlinc"
+private const val jarFile = "rkotlin.jar"
 
 fun main(args: Array<String>) {
   val params = ParameterExtractor.parse(args)
 
   val root = params.myProg
   val workDir = getWorkPath(root)
-  val target = buildExeName(root.removeSuffix(".kt")) + "Kt"
 
   rebuild(root, workDir)
-
-  run(listOf("kotlin", "-cp", workDir, target))
+  run(listOf("java", "-jar", buildPath(workDir, jarFile)))
 }
 
-fun buildExeName(exeBaseName: String): String {
-
-  // 最初の文字を大文字に変換
-  val capitalizedString = exeBaseName.take(1).uppercase() + exeBaseName.drop(1)
-
-  // 最初の"."を"_"に変換し、二つ目以降の"."を取り除く
-  val modifiedString = capitalizedString
-    .replaceFirst(".", "_")
-    .replace(".", "")
-
-  return modifiedString
-}
 fun buildPath(vararg elements: String): String {
   return Paths.get("", *elements).toString()
 }
@@ -69,7 +55,7 @@ fun getWorkPath(root: String): String {
 }
 
 fun rebuild(root: String, workDir: String) {
-  val todo = listOf(root, "-d", workDir)
+  val todo = listOf(root, "-include-runtime", "-d", buildPath(workDir, jarFile))
   run(listOf(compiler) + todo)
 }
 
