@@ -14,9 +14,12 @@ private val userName: String
     return System.getProperty("user.name")
   }
 
+private var userTempDir: String = ""
+
 private val myOwnTmpDir: String
   get() {
-    var tmpRoot = System.getProperty("java.io.tmpdir")
+    var tmpRoot = if (userTempDir != "") userTempDir
+      else System.getProperty("java.io.tmpdir")
 
     tmpRoot = Paths.get(tmpRoot, ".rkotlin-${userName}").toString()
 
@@ -30,6 +33,7 @@ private const val jarFile = "rkotlin.jar"
 
 fun main(args: Array<String>) {
   val params = ParameterExtractor.parse(args)
+  userTempDir = params.tempDir
 
   val root = params.myProg
   val workDir = getWorkPath(root)
@@ -48,7 +52,6 @@ fun getWorkPath(root: String): String {
   md.update(Paths.get(root).toAbsolutePath().toString().toByteArray())
 
   val digest = md.digest()
-
   val hash = digest.joinToString("") { "%02x".format(it) }
 
   return buildPath(myOwnTmpDir, "rkotlin-${hash}")
