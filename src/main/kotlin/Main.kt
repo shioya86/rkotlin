@@ -46,10 +46,10 @@ fun main(args: Array<String>) {
   userTempDir = params.tempDir
 
   val files = params.sourceFiles
-
-  val workDir = getWorkPath(files)
-  val exe = buildPath(workDir, jarFile)
   val deps = CodeDependencies().getDeps(files)
+
+  val workDir = getWorkPath(deps)
+  val exe = buildPath(workDir, jarFile)
 
   if (anyNewerThan(deps, exe)) {
     rebuild(files, workDir)

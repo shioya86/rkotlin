@@ -9,7 +9,11 @@ fun buildPath(vararg elements: String): String {
 }
 
 fun anyNewerThan(filenames: List<String>, buildTargetFilename: String): Boolean {
-  val lastBuildTime = Files.getLastModifiedTime(Paths.get(buildTargetFilename))
+  val lastBuildTime = if (Files.exists(Paths.get(buildTargetFilename)))
+      Files.getLastModifiedTime(Paths.get(buildTargetFilename))
+    else
+      FileTime.fromMillis(0)
+
   return filenames.any { f ->
     Files.getLastModifiedTime(Paths.get(f)) > lastBuildTime
   }
