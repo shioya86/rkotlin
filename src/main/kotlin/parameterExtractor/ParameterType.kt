@@ -4,5 +4,6 @@ data class ParameterType(
   val tempDir: String,
   val sourceFiles: List<String>,
   val buildOnly: Boolean,
+  val force: Boolean,
   val arguments: String
 )

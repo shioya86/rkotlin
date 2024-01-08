@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
   val workDir = getWorkPath(deps)
   val exe = buildPath(workDir, jarFile)
 
-  if (anyNewerThan(deps, exe)) {
+  if (params.force || anyNewerThan(deps, exe)) {
     rebuild(files, workDir)
   }
 

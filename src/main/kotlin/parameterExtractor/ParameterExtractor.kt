@@ -20,6 +20,10 @@ class ParameterExtractor {
         .option(ArgType.Boolean, "build-only", description = "")
         .default(false)
 
+      val force by parser
+        .option(ArgType.Boolean, "force", description = "")
+        .default(false)
+
       val arguments by parser
         .option(ArgType.String, "args", description = "")
         .default("")
@@ -30,6 +34,7 @@ class ParameterExtractor {
         tmpDir,
         sourceFiles,
         buildOnly,
+        force,
         arguments
       )
     }
