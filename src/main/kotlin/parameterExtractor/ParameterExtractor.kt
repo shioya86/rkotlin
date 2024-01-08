@@ -20,8 +20,18 @@ class ParameterExtractor {
         .option(ArgType.Boolean, "build-only", description = "")
         .default(false)
 
+      val arguments by parser
+        .option(ArgType.String, "args", description = "")
+        .default("")
+
       parser.parse(args)
-      return ParameterType(tmpDir, sourceFiles, buildOnly)
+
+      return ParameterType(
+        tmpDir,
+        sourceFiles,
+        buildOnly,
+        arguments
+      )
     }
   }
 }

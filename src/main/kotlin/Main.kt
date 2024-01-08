@@ -59,7 +59,7 @@ fun main(args: Array<String>) {
     return
   }
 
-  run(listOf("java", "-jar", buildPath(workDir, jarFile)))
+  run(listOf("java", "-jar", buildPath(workDir, jarFile), params.arguments))
 }
 
 
