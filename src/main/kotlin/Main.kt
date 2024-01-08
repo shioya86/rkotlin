@@ -98,17 +98,15 @@ fun getVersions(args: List<String>): List<String> {
 
   // 標準出力を表示
   BufferedReader(InputStreamReader(process.inputStream, Charset.defaultCharset())).use { r ->
-    while (r.readLine().also { lines += it } != null) {}
+    r.lineSequence().forEach { l -> lines += l }
   }
 
   // エラー出力を表示
   BufferedReader(InputStreamReader(process.errorStream, Charset.defaultCharset())).use { r ->
-    while (r.readLine().also { lines += it } != null) {}
+    r.lineSequence().forEach { l -> lines += l }
   }
 
-  return lines
-    .filterNotNull()
-    .also{ process.destroy() }
+  return lines.also{ process.destroy() }
 }
 fun run(args: List<String>): Int {
   val processBuilder = ProcessBuilder(args)
